@@ -4,7 +4,15 @@ var express = require('express'),
     path = require('path'),
     httpServer = express.createServer(),
     config = {},
-    socketServer;
+    socketServer,
+    teamASizes = {
+        5: 3
+        6: 4,
+        7: 4,
+        8: 5,
+        9: 6,
+        10: 6
+    };
 
 config.html = './client';
 
@@ -25,6 +33,30 @@ httpServer.get('/main.js', function(request, response) {
     response.sendfile(path.join(config.html, 'main.js'));
 });
 
+function assignTeams(clients) {
+    var teamA = [],
+        teamB = [],
+        i = teamASizes[clients.length],
+        j;
+
+    while(i > 0) {
+        j = Math.floor(Math.random() * (i+1));
+        teamA.push(clients.splice(i, 1));
+        i--;
+    }
+
+    Array.push.apply(teamB, clients);
+
+    return [teamA, teamB];
+
+
+
+
+}
+
+function onGameStarted(socket, assignment) {
+
+}
 
 function onUserJoined(socket) {
     /* This function applies functionality to the socket after the user has
@@ -51,6 +83,19 @@ function onUserJoined(socket) {
         socket.get('user', function(error, user) {
             socket.broadcast.emit('left', user);
         });
+    });
+
+    // 
+    socket.on('start-game', function() {
+        var teams, teamA, teamB;
+
+        serverSocket.sockets.emit('game-started');
+
+        teams = assignTeams(serverSocket.sockets.clients());
+        teamA = teams[0];
+        teamB = teams[1];
+
+        // TODO HAZMAT CALL HERE
     });
 
 }
