@@ -6,7 +6,7 @@ var express = require('express'),
     config = {},
     socketServer,
     teamASizes = {
-        5: 3
+        5: 3,
         6: 4,
         7: 4,
         8: 5,

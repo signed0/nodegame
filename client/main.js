@@ -26,6 +26,21 @@ $(function() {
 		loadUsers();
 	});
 
+	$('#start-game').click(function() {
+		socket.emit('start-game');	
+		$(this).hide();
+	})
+	
+
+	socket.on('game-started', function() {
+		$('start-game"').hide();
+		updateStatus('Game Started');
+	});
+
+	socket.on('assignment', function() {
+
+	});
+
 	function loadUsers() {
         socket.emit('get-users');
 	}
@@ -65,7 +80,7 @@ $(function() {
 				break;
 			}
 		}
-		
+
 		refreshUsers();
 	}
 
