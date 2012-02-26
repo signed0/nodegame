@@ -10,22 +10,68 @@
 		<script src="/socket.io/socket.io.js"></script>
 
 		<script type="text/javascript" src="main.js"></script>
+
+		<style>
+			body {
+				padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+			}
+			#status {
+				color: #ffffff; 
+				float: right; 
+				padding: 8px 20px 12px;
+			}
+
+			.modal {
+				position: relative; 
+				top: auto; left: auto; 
+				margin: 0 auto; 
+				z-index: 1;
+			}
+		</style>
 	</head>
 	<body>
-		<div class="container">
+		<div class="navbar navbar-fixed-top">
+		  <div class="navbar-inner">
+			<div class="container-fluid">
+				<a class="brand" href="/">Fax Piss</a>
+				
+				<div id="status">Loading...</div>
+			</div>
+		  </div>
+		</div>
 
-			<div id="user-form" style="margin: auto">
-				<h2>Choose a username</h2>
-				<form class="form">
-					<fieldset>
-						<div class="control-group">
-							<input type="text" name="username" id="username" required />
-						</div>
-					</fieldset>
-					<button type="submit" class="btn btn-large btn-primary">Lets Go!</button>
-				</form>
+
+		<div class="modal" id="join-form">
+			<div class="modal-header">
+				<h3>Choose a username</h3>
 			</div>
 
+			<div class="modal-body">
+				<form>
+				<fieldset>
+					<div class="control-group">
+						<input type="text" name="username" id="username" required />
+					</div>
+				</fieldset>
+				</form>
+
+			</div>
+
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-large btn-primary">Lets Go!</button>
+			</div>
 		</div>
+
+		<div class="container" id="game-area" style="display: none">
+			<div class="row">
+				<div class="span8">
+				</div>
+				<div class="span4 offset8">
+					<h3>Users</h3>
+					<ul id="users-list" class="unstyled"></ul>
+				</div>
+			</div>
+		</div>
+
 	</body>
 </html>
