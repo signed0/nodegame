@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Fax Piss</title>
+		<link rel="stylesheet" type="text/css" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" />
+		<link rel="stylesheet"type="text/css" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" />
+
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+		<script src="/socket.io/socket.io.js"></script>
+
+		<script type="text/javascript">
+		$(function() {
+			$('#user-form form').submit(function() {
+				var username = $('#username').val();
+
+				alert(username);
+				return false;
+			});
+		});
+		</script>
+	</head>
+	<body>
+		<div class="container">
+
+			<div id="user-form" style="margin: auto">
+				<h2>Choose a username</h2>
+				<form class="form">
+					<fieldset>
+						<div class="control-group">
+							<input type="text" name="username" id="username" required />
+						</div>
+					</fieldset>
+					<button type="submit" class="btn btn-large btn-primary">Lets Go!</button>
+				</form>
+			</div>
+
+		</div>
+	</body>
+</html>
