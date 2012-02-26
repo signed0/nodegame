@@ -45,7 +45,7 @@ function assignTeams(clients) {
         i--;
     }
 
-    Array.push.apply(teamB, clients);
+    Array.prototype.push.apply(teamB, clients);
 
     return [teamA, teamB];
 
@@ -89,9 +89,9 @@ function onUserJoined(socket) {
     socket.on('start-game', function() {
         var teams, teamA, teamB;
 
-        serverSocket.sockets.emit('game-started');
+        socketServer.sockets.emit('game-started');
 
-        teams = assignTeams(serverSocket.sockets.clients());
+        teams = assignTeams(socketServer.sockets.clients());
         teamA = teams[0];
         teamB = teams[1];
 
