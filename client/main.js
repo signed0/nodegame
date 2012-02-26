@@ -18,7 +18,8 @@ $(function() {
 		}
 	});
 
-	$('button', $registerForm).click(function() {
+
+	$('form', $registerForm).submit(function() {
 		var username = $('#username').val();
 		var user = {username: username};
 
@@ -29,6 +30,10 @@ $(function() {
 		$('#game-area').show();
 
 		return false;
+	})
+
+	$('button', $registerForm).click(function() {
+		$('form', $registerForm).submit();
 	});
 
 	function addUser(user) {
