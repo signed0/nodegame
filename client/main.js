@@ -11,13 +11,12 @@ $(function() {
 	});
 
 	socket.on('ready', function() {
+		updateStatus('Ready');
 		loadUsers();
 	});
 
 	function loadUsers() {
 		socket.on('user-list', function(users) {
-			updateStatus('Connected.');
-
 			for (var i=users.length; i--;) {
 				addUser(users[i]);
 			}
