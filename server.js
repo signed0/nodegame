@@ -37,10 +37,8 @@ function onUserJoined(socket) {
         var users = [];
 
         socketServer.sockets.clients().forEach(function(s) {
-            s.get('username', function(err, username) {
-                users.push({
-                    username: username
-                });
+            s.get('user', function(err, user) {
+                users.push(user);
             });
         });
 
@@ -50,8 +48,8 @@ function onUserJoined(socket) {
 
     // disconnect the user, and broadcast he or she has left
     socket.on('disconnect', function() {
-        socket.get('username', function(error, username) {
-            socket.broadcast.emit('left', {username: username});
+        socket.get('user', function(error, user) {
+            socket.broadcast.emit('left', user);
         });
     });
 
@@ -61,12 +59,17 @@ function onUserJoined(socket) {
 socketServer.sockets.on('connection', function (socket) {
 
     // listen for a user to join the room
-    // store the username, then bind the socket to the other events that
+    // store the user, then bind the socket to the other events that
     // the user can use once he/she has connected
     socket.on('join', function(data) {
-        socket.set('username', data.username, function() {
+        var user = {
+            id: socket.id,
+            name: data.name
+        };
+
+        socket.set('user', user, function() {
             socket.emit('ready');
-            socket.broadcast.emit('joined', {username: data.username});
+            socket.broadcast.emit('joined', user);
             onUserJoined(socket);
         });
     });
