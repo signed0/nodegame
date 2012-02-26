@@ -10,14 +10,19 @@ $(function() {
 		addUser(user);
 	});
 
-	socket.on('user-list', function(users) {
-		updateStatus('Connected.');
-
-		for (var i=users.length; i--;) {
-			addUser(users[i]);
-		}
+	socket.on('ready', function() {
+		loadUsers();
 	});
 
+	function loadUsers() {
+		socket.on('user-list', function(users) {
+			updateStatus('Connected.');
+
+			for (var i=users.length; i--;) {
+				addUser(users[i]);
+			}
+		});	
+	}
 
 	$('form', $registerForm).submit(function() {
 		var username = $('#username').val();
@@ -26,7 +31,7 @@ $(function() {
 		updateStatus('Connecting to server..')
 		socket.emit('join', user);
 
-		$registerForm.hide();
+		$registerForm.modal('hide');
 		$('#game-area').show();
 
 		return false;
@@ -44,5 +49,10 @@ $(function() {
 		$status.html(message);
 	}
 
-	updateStatus('Loaded');
+	function onReady() {
+		updateStatus('Loaded');
+		$registerForm.modal();
+	}
+
+	onReady();
 });
