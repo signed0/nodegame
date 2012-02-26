@@ -65,6 +65,7 @@ socketServer.sockets.on('connection', function (socket) {
     // the user can use once he/she has connected
     socket.on('join', function(data) {
         socket.set('username', data.username, function() {
+            socket.emit('ready');
             socket.broadcast.emit('joined', {username: data.username});
             onUserJoined(socket);
         });
