@@ -6,17 +6,22 @@ $(function() {
     
 	var users = [];
 
+	socket.on('log', function(str) {
+		console.log(str);
+	});
+
+
     // set up listeners
     socket.on('user-list', function(users) {
         for (var i=users.length; i--;) {
             addUser(users[i]);
-            console.log('user in list: ' + users[i].name)
+            console.log('user in list: ' + users[i].name);
         }
     });	
 
 	socket.on('joined', function(user) {
 		addUser(user);
-		console.log(user.name + ' joined')
+		console.log(user.name + ' joined');
 	});
 
 	socket.on('left', function(user) {
