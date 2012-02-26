@@ -26,16 +26,49 @@ httpServer.get('/main.js', function(request, response) {
 });
 
 
+function onUserJoined(socket) {
+    /* This function applies functionality to the socket after the user has
+     * joined the game
+     */
+
+    // return the list of connected users
+    // iterate through all the sockets, building up a list of users
+    socket.on('get-users', function() {
+        var users = [];
+
+        socketServer.sockets.clients().forEach(function(s) {
+            s.get('username', function(err, username) {
+                users.push({
+                    username: username
+                });
+            });
+        });
+
+        socket.emit('user-list', users);
+    });
+
+
+    // disconnect the user, and broadcast he or she has left
+    socket.on('disconnect', function() {
+        socket.get('username', function(error, username) {
+            socket.broadcast.emit('left', {username: username});
+        });
+    });
+
+}
+
 // set up the socket responses
 socketServer.sockets.on('connection', function (socket) {
 
-
-    // get the user information
-
-    // add the user to the list of users
-
-    // tell everybody that a new user has joined
-
+    // listen for a user to join the room
+    // store the username, then bind the socket to the other events that
+    // the user can use once he/she has connected
+    socket.on('join', function(data) {
+        socket.set('username', data.username, function() {
+            socket.broadcast.emit('joined', {username: data.username});
+            onUserJoined(socket);
+        });
+    });
 
 });
 
