@@ -2,6 +2,7 @@
 var express = require('express'),
     io = require('socket.io'),
     path = require('path'),
+    Game = require('./Game').Game,
     httpServer = express.createServer(),
     config = {},
     socketServer,
@@ -49,9 +50,6 @@ function assignTeams(clients) {
 
     return [teamA, teamB];
 
-
-
-
 }
 
 function onGameStarted(socket, assignment) {
@@ -96,6 +94,8 @@ function onUserJoined(socket) {
         teamB = teams[1];
 
         // TODO HAZMAT CALL HERE
+        var game = new Game(socketServer, teamA, teamB);
+        game.start();
     });
 
 }
