@@ -1,9 +1,16 @@
-var socket = io.connect('http://localhost');
+var socket = io.connect('/');
 
 
 $(function() {
 	var $status = $('#status');
 	var $registerForm = $('#join-form');
+        
+    // set up listeners
+    socket.on('user-list', function(users) {
+        for (var i=users.length; i--;) {
+            addUser(users[i]);
+        }
+    });	
 
 
 	socket.on('joined', function(user) {
@@ -16,11 +23,7 @@ $(function() {
 	});
 
 	function loadUsers() {
-		socket.on('user-list', function(users) {
-			for (var i=users.length; i--;) {
-				addUser(users[i]);
-			}
-		});	
+        socket.emit('get-users');
 	}
 
 	$('form', $registerForm).submit(function() {
