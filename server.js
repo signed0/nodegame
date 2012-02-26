@@ -6,7 +6,7 @@ var express = require('express'),
     config = {},
     socketServer;
 
-config.html = './';
+config.html = './client';
 
 config.http = {};
 config.http.port = 6090;
@@ -20,6 +20,9 @@ socketServer = io.listen(httpServer);
 // set up the html responses
 httpServer.get('/', function(request, response) {
     response.sendfile(path.join(config.html, 'index.html'));
+});
+httpServer.get('/main.js', function(request, response) {
+    response.sendfile(path.join(config.html, 'main.js'));
 });
 
 
