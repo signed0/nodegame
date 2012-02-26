@@ -26,13 +26,17 @@ httpServer.get('/', function(request, response) {
 // set up the socket responses
 socketServer.sockets.on('connection', function (socket) {
 
+    socket.on('join', function(data) {
+        socket.set('username', data.username, function() {
+            socket.broadcast.emit('joined', {username: data.username});
+        });
+    });
 
-    // get the user information
-
-    // add the user to the list of users
-
-    // tell everybody that a new user has joined
-
+    socket.on('disconnect', function() {
+        socket.get('username', function(error, username) {
+            socket.broadcast.emit('left', {username: username});
+        });
+    });
 
 });
 
