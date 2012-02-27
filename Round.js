@@ -1,6 +1,9 @@
 var utils = require('./utils.js');
 
-function Round() {
+function Round(game) {
+
+    this.game = game;
+    this.vetos = 0;
 
 }
 

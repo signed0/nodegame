@@ -15,6 +15,10 @@ function Game(io) {
     this.players = io.sockets.clients();
     this.leaderIndex = 0;
     this.round = 0;
+    this.score = {
+        goods: 0,
+        bads: 0
+    };
 
     var teams = assignTeams(this.players);
     this.goods = teams[0];
@@ -31,6 +35,8 @@ Game.prototype = {
     start: function () {
         this.io.sockets.emit('log', 'game started'); 
         this.io.sockets.in('bads').emit('log', 'you are a bad guy!'); 
+
+
     },
 
 };
