@@ -2,18 +2,10 @@
 var express = require('express'),
     io = require('socket.io'),
     path = require('path'),
-    Game = require('./Game').Game,
+    Game = require('./Game'),
     httpServer = express.createServer(),
     config = {},
-    socketServer,
-    teamASizes = {
-        5: 3,
-        6: 4,
-        7: 4,
-        8: 5,
-        9: 6,
-        10: 6
-    };
+    socketServer;
 
 config.html = './client';
 
@@ -33,24 +25,6 @@ httpServer.get('/', function(request, response) {
 httpServer.get('/main.js', function(request, response) {
     response.sendfile(path.join(config.html, 'main.js'));
 });
-
-function assignTeams(clients) {
-    var teamA = [],
-        teamB = [],
-        i = teamASizes[clients.length],
-        j;
-
-    while(i > 0) {
-        j = Math.floor(Math.random() * (i+1));
-        teamA.push(clients.splice(i, 1));
-        i--;
-    }
-
-    Array.prototype.push.apply(teamB, clients);
-
-    return [teamA, teamB];
-
-}
 
 function onGameStarted(socket, assignment) {
 
@@ -85,16 +59,9 @@ function onUserJoined(socket) {
 
     // 
     socket.on('start-game', function() {
-        var teams, teamA, teamB;
-
-        socketServer.sockets.emit('game-started');
-
-        teams = assignTeams(socketServer.sockets.clients());
-        teamA = teams[0];
-        teamB = teams[1];
 
         // TODO HAZMAT CALL HERE
-        var game = new Game(socketServer, teamA, teamB);
+        var game = new Game(socketServer);
         game.start();
     });
 

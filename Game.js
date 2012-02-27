@@ -1,16 +1,27 @@
 var utils = require('./utils.js'),
-    forEach = utils.forEach;
+    forEach = utils.forEach,
+    teamASizes = {
+        5: 3,
+        6: 4,
+        7: 4,
+        8: 5,
+        9: 6,
+        10: 6
+    };
 
-function Game(io, goods, bads){
+function Game(io) {
 
     this.io = io;
-    this.goods = goods;
-    this.bads = bads;
+    this.players = io.sockets.clients();
+    this.leaderIndex = 0;
     this.round = 0;
-    this.rooms = {};
+
+    var teams = assignTeams(this.players);
+    this.goods = teams[0];
+    this.bads = teams[1];
 
     forEach(this.bads, function (socket) {
-        socket.join('spies');
+        socket.join('bads');
     }); 
 
 }
@@ -18,9 +29,27 @@ function Game(io, goods, bads){
 Game.prototype = {
 
     start: function () {
-        this.io.sockets.in('spies').emit('log', 'you are a spy!'); 
+        this.io.sockets.emit('log', 'game started'); 
+        this.io.sockets.in('bads').emit('log', 'you are a bad guy!'); 
     },
 
 };
 
-exports.Game = Game;
+module.exports = Game;
+
+function assignTeams(clients) {
+    var teamA = [],
+        teamB = [],
+        i = teamASizes[clients.length],
+        j;
+
+    while (i > 0) {
+        j = Math.floor(Math.random() * (i+1));
+        teamA.push(clients.splice(j, 1));
+        i--;
+    }
+
+    teamB = [].concat(clients);
+
+    return [teamA, teamB];
+}
